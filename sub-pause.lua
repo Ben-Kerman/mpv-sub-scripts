@@ -18,8 +18,10 @@ local active = false
 mp.add_key_binding("n", "sub-pause-toggle", function()
 	if active then
 		mp.unobserve_property(set_up_timer)
+		mp.osd_message("Subtitle pausing disabled")
 	else
 		mp.observe_property("sub-text", "string", set_up_timer)
+		mp.osd_message("Subtitle pausing enabled")
 	end
 	active = not active
 end)
