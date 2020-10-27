@@ -13,4 +13,13 @@ local function set_up_timer(prop_name, sub_text)
 	end
 end
 
-mp.observe_property("sub-text", "string", set_up_timer)
+local active = false
+
+mp.add_key_binding("n", "sub-pause-toggle", function()
+	if active then
+		mp.unobserve_property(set_up_timer)
+	else
+		mp.observe_property("sub-text", "string", set_up_timer)
+	end
+	active = not active
+end)
