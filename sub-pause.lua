@@ -1,9 +1,9 @@
 local function pause()
+	if not active then return end
 	mp.set_property("pause", "yes")
 end
 
 local function set_up_timer(prop_name, sub_text)
-	local time = mp.get_property("time-pos")
 	if sub_text ~= '' then
 		local sub_end = mp.get_property_number("sub-end")
 		local time = mp.get_property_number("time-pos")
