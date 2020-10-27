@@ -1,3 +1,5 @@
+local active = false
+
 local function pause()
 	if not active then return end
 	mp.set_property("pause", "yes")
@@ -12,8 +14,6 @@ local function set_up_timer(prop_name, sub_text)
 		end
 	end
 end
-
-local active = false
 
 mp.add_key_binding("n", "sub-pause-toggle", function()
 	if active then
