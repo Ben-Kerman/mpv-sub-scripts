@@ -9,7 +9,7 @@ local function set_up_timer(prop_name, sub_text)
 	if sub_text ~= '' then
 		local sub_end = mp.get_property_number("sub-end")
 		local time = mp.get_property_number("time-pos")
-		mp.add_timeout(sub_end - time, pause)
+		mp.add_timeout(sub_end - time - 0.1, pause)
 	end
 end
 
