@@ -22,3 +22,8 @@ presents subtitle timing information to user scripts.
 A more involved solution would be to parse the sub file externally,
 but that would probably not be worth the effort considering how rarely
 the issue is likely to occur.
+
+---
+
+If you come across any other problems while using the script feel free
+to open a GitHub issue or send a pull request.
