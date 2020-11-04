@@ -1,13 +1,19 @@
 # mpv-sub-pause
 
-An mpv script that automatically pauses after each subtitle line.
+A mpv script that automatically pauses after each subtitle line.
 Mostly intended for language learning.
 
 The default key binding for toggling auto-pause is `n`.  
+The default key binding for skipping the next subtitle pause is `Ctrl+Space`.  
+The default key binding for repeating the current subtitle is `Ctrl+r`.  
+The default key binding for repeating the current subtitle without pausing the subtitle is `Alt+r`.  
 To use a custom key add a line like the following to your `input.conf`:
 
 ```
 X script-binding sub-pause-toggle
+X script-binding sub-pause-toggle-skip
+X script-binding sub-pause-toggle-replay
+X script-binding sub-pause-toggle-replay-skip
 ```
 
 ## Known Issues
