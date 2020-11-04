@@ -1,10 +1,11 @@
 local active = false
-local pause_at = 0
 local skip_next = false
+local pause_at = 0
 
 local function handle_tick(prop_name, time_pos)
 	if time_pos ~= nil and pause_at - time_pos < 0.1 then
-		if skip_next then skip_next = false else mp.set_property("pause", "yes") end
+		if skip_next then skip_next = false
+		else mp.set_property("pause", "yes") end
 		mp.unobserve_property(handle_tick)
 	end
 end
@@ -17,17 +18,17 @@ local function handle_sub_text_change(prop_name, sub_text)
 	end
 end
 
-local function replay_sub(skip)
- 	local sub_start = mp.get_property_number('sub-start')
+local function replay_sub()
+	local sub_start = mp.get_property_number('sub-start')
 	if sub_start ~= nil then
-		skip_next = skip
-		mp.set_property("time-pos", sub_start + mp.get_property_number('sub-delay') - 0.1)
+		mp.set_property("time-pos", sub_start + mp.get_property_number('sub-delay'))
 		mp.set_property("pause", "no")
 	end 
 end
 
 mp.add_key_binding("n", "sub-pause-toggle", function()
 	if active then
+		pause_at = 0
 		skip_next = false
 		mp.unobserve_property(handle_sub_text_change)
 		mp.unobserve_property(handle_tick)
@@ -39,14 +40,6 @@ mp.add_key_binding("n", "sub-pause-toggle", function()
 	active = not active
 end)
 
-mp.add_key_binding("Ctrl+Space", "sub-pause-toggle-skip", function()
-	skip_next = not skip_next
-end)
+mp.add_key_binding("Ctrl+SPACE", "sub-pause-skip-next", function() skip_next = true end)
 
-mp.add_key_binding("Ctrl+r", "sub-pause-toggle-replay", function()
-	replay_sub(false)
-end)
-
-mp.add_key_binding("Alt+r", "sub-pause-toggle-replay-skip", function()
-	replay_sub(true)
-end)
+mp.add_key_binding("Alt+SPACE", "sub-pause-replay", function() replay_sub() end)
