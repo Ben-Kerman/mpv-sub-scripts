@@ -6,8 +6,8 @@ Mostly intended for language learning.
 The default key bindings are:
 
 - `n`: toggle auto-pause (`sub-pause-toggle`)
-- `Shift+SPACE`: replay active line, always available (`sub-pause-replay`)
 - `Ctrl+SPACE`: skip next pause (`sub-pause-skip-next`)
+- `Alt+SPACE`: replay active line, always available (`sub-pause-replay`)
 
 To use custom key bindings add lines like the following to your `input.conf`
 (where `action_name` is the value in parentheses in the above list):
