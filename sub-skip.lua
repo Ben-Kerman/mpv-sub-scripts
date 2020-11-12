@@ -5,6 +5,7 @@ local speed_skip_speed = 2.5
 
 local active = false
 local seek_skip = false
+local skipping = false
 local sped_up = false
 local last_sub_end, next_sub_start
 
@@ -72,9 +73,6 @@ function handle_tick(_, time_pos)
 			next_sub_start = time_pos + next_delay
 		end
 	elseif sped_up and time_pos > next_sub_start - end_offset then
-		mp.unobserve_property(handle_tick)
-		mp.set_property_number("speed", initial_speed)
-		sped_up = false
 		end_skip()
 	end
 end
@@ -85,7 +83,10 @@ function start_skip()
 end
 
 function end_skip()
-	mp.observe_property("sub-text", "string", handle_sub_text_change)
+	mp.unobserve_property(handle_tick)
+	skipping = false
+	sped_up = false
+	mp.set_property_number("speed", initial_speed)
 	last_sub_end, next_sub_start = nil
 end
 
