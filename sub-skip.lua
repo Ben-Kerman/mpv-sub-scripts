@@ -25,6 +25,11 @@ function calc_next_delay()
 	else return -(new_delay - initial_delay) end
 end
 
+function end_seek_skip(next_sub_begin)
+	mp.set_property_number("time-pos", next_sub_begin - end_offset)
+	end_skip()
+end
+
 local seek_skip_timer
 seek_skip_timer = mp.add_periodic_timer(128, function()
 	if mp.get_property_bool("seeking") == false then
@@ -36,8 +41,7 @@ seek_skip_timer = mp.add_periodic_timer(128, function()
 			seek_skip_timer:resume()
 		else
 			seek_skip_timer:kill()
-			mp.set_property_number("time-pos", time_pos + next_delay - end_offset)
-			end_skip()
+			end_seek_skip(time_pos + next_delay)
 			mp.set_property_bool("pause", false)
 		end
 	end
@@ -50,8 +54,7 @@ function start_seek_skip()
 	mp.unobserve_property(handle_tick)
 	local next_delay = calc_next_delay()
 	if next_delay ~= nil then
-		mp.set_property_number("time-pos", mp.get_property_number("time-pos") + next_delay - end_offset)
-		end_skip()
+		end_seek_skip(mp.get_property_number("time-pos") + next_delay)
 	else
 		mp.set_property_bool("pause", true)
 		seek_skip_timer:resume()
