@@ -66,6 +66,7 @@ end
 local initial_speed = mp.get_property_number("speed")
 local initial_video_sync = mp.get_property("video-sync")
 function handle_tick(_, time_pos)
+	if time_pos == nil then return end
 	if not sped_up and time_pos > last_sub_end + start_offset then
 		if seek_skip then start_seek_skip()
 		else
