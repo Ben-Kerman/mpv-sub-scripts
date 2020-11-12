@@ -17,13 +17,10 @@ function calc_next_delay()
 	local new_delay = mp.get_property_number("sub-delay")
 	mp.set_property_number("sub-delay", initial_delay)
 
-	local ret
-	if new_delay == initial_delay then ret = nil
-	else ret = -(new_delay - initial_delay) end
-
 	mp.set_property_bool("sub-visibility", initial_visibility)
 
-	return ret
+	if new_delay == initial_delay then return nil
+	else return -(new_delay - initial_delay) end
 end
 
 local seek_skip_timer
