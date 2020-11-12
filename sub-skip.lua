@@ -26,6 +26,11 @@ function handle_tick(prop_name, time_pos)
 		initial_speed = mp.get_property_number("speed")
 		mp.set_property_number("speed", speed_skip_speed)
 		sped_up = true
+	elseif sped_up and skip_end == nil then
+		local next_delay = calc_next_delay()
+		if next_delay ~= nil then
+			skip_end = time_pos + next_delay - end_offset
+		end
 	elseif sped_up and time_pos > skip_end then
 		mp.unobserve_property(handle_tick)
 		mp.set_property_number("speed", initial_speed)
@@ -37,12 +42,17 @@ end
 function handle_sub_text_change(prop_name, sub_text)
 	if sub_text ~= nil and sub_text == "" then
 		local next_delay = calc_next_delay()
-		if next_delay < min_skip_time then return
-		else
-			local time_pos = mp.get_property_number("time-pos")
+		local time_pos = mp.get_property_number("time-pos")
+		local function start_skip()
 			skip_start = time_pos + start_offset
-			skip_end = time_pos + next_delay - end_offset
 			mp.observe_property("time-pos", "number", handle_tick)
+		end
+
+		if next_delay == nil then start_skip()
+		elseif next_delay < min_skip_time then return
+		else
+			skip_end = time_pos + next_delay - end_offset
+			start_skip()
 		end
 	end
 end
