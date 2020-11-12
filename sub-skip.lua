@@ -79,6 +79,11 @@ function handle_tick(_, time_pos)
 	end
 end
 
+function start_skip()
+	mp.unobserve_property(handle_sub_text_change)
+	mp.observe_property("time-pos", "number", handle_tick)
+end
+
 function end_skip()
 	mp.observe_property("sub-text", "string", handle_sub_text_change)
 	last_sub_end, next_sub_start = nil
@@ -86,20 +91,15 @@ end
 
 function handle_sub_text_change(_, sub_text)
 	if sub_text == "" then
-		local next_delay = calc_next_delay()
 		local time_pos = mp.get_property_number("time-pos")
-		local function start_skip()
-			mp.unobserve_property(handle_sub_text_change)
-			last_sub_end = time_pos
-			mp.observe_property("time-pos", "number", handle_tick)
-		end
+		local next_delay = calc_next_delay()
 
-		if next_delay == nil then start_skip()
-		elseif next_delay < min_skip_time then return
-		else
-			next_sub_start = time_pos + next_delay
-			start_skip()
+		if next_delay ~= nil then
+			if next_delay < min_skip_time then return
+			else next_sub_start = time_pos + next_delay end
 		end
+		last_sub_end = time_pos
+		start_skip()
 	end
 end
 
