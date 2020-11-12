@@ -118,10 +118,8 @@ end
 mp.add_key_binding("Ctrl+n", "sub-skip-toggle", function()
 	if active then
 		seek_skip_timer:kill()
+		end_skip()
 		mp.unobserve_property(handle_sub_text_change)
-		mp.unobserve_property(handle_tick)
-		last_sub_end, next_sub_start = nil
-		sped_up = false
 		mp.osd_message("Non-subtitle skip disabled")
 	else
 		mp.observe_property("sub-text", "string", handle_sub_text_change)
