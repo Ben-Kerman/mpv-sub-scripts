@@ -78,7 +78,7 @@ function handle_tick(_, time_pos)
 end
 
 function start_skip()
-	mp.unobserve_property(handle_sub_text_change)
+	skipping = true
 	mp.observe_property("time-pos", "number", handle_tick)
 end
 
@@ -91,7 +91,7 @@ function end_skip()
 end
 
 function handle_sub_text_change(_, sub_text)
-	if sub_text == "" then
+	if sub_text == "" and not skipping then
 		local time_pos = mp.get_property_number("time-pos")
 		local next_delay = calc_next_delay()
 
@@ -101,7 +101,7 @@ function handle_sub_text_change(_, sub_text)
 		end
 		last_sub_end = time_pos
 		start_skip()
-	end
+	elseif sub_text ~= nil and sub_text ~= "" then end_skip() end
 end
 
 mp.add_key_binding("Ctrl+n", "sub-skip-toggle", function()
