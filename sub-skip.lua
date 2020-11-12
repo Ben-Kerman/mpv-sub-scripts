@@ -111,7 +111,7 @@ function handle_sub_text_change(_, sub_text)
 		end
 		last_sub_end = time_pos
 		start_skip()
-	elseif sub_text ~= nil and sub_text ~= "" then end_skip() end
+	elseif skipping and sub_text ~= nil and sub_text ~= "" then end_skip() end
 end
 
 mp.add_key_binding("Ctrl+n", "sub-skip-toggle", function()
