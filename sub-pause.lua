@@ -2,7 +2,7 @@ local active = false
 local skip_next = false
 local pause_at = 0
 
-local function handle_tick(prop_name, time_pos)
+function handle_tick(prop_name, time_pos)
 	if time_pos ~= nil and pause_at - time_pos < 0.1 then
 		if skip_next then skip_next = false
 		else mp.set_property("pause", "yes") end
@@ -10,7 +10,7 @@ local function handle_tick(prop_name, time_pos)
 	end
 end
 
-local function handle_sub_text_change(prop_name, sub_text)
+function handle_sub_text_change(prop_name, sub_text)
 	mp.unobserve_property(handle_tick)
 	if sub_text ~= nil and sub_text ~= '' then
 		pause_at = mp.get_property_number("sub-end") + mp.get_property_number("sub-delay")
@@ -18,7 +18,7 @@ local function handle_sub_text_change(prop_name, sub_text)
 	end
 end
 
-local function replay_sub()
+function replay_sub()
 	local sub_start = mp.get_property_number('sub-start')
 	if sub_start ~= nil then
 		mp.set_property("time-pos", sub_start + mp.get_property_number('sub-delay'))
