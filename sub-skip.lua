@@ -61,7 +61,7 @@ function start_seek_skip()
 	end
 end
 
-local initial_speed = 1
+local initial_speed = mp.get_property_number("speed")
 function handle_tick(_, time_pos)
 	if not sped_up and time_pos > last_sub_end + start_offset then
 		if seek_skip then start_seek_skip()
