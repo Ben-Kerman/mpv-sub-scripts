@@ -131,6 +131,7 @@ end)
 
 function change_speed_skip_speed(new_value)
 	speed_skip_speed = new_value
+	if skipping then mp.set_property_number("speed", new_value) end
 	mp.osd_message("Skip speed: " .. new_value)
 end
 
@@ -141,6 +142,7 @@ end
 
 mp.add_key_binding("Ctrl+Alt+n", "sub-skip-switch-mode", function()
 	seek_skip = not seek_skip
+	mp.osd_message("Seek skip " .. (seek_skip and "enabled" or "disabled"))
 end)
 
 mp.add_key_binding("Ctrl+Alt+[", "sub-skip-decrease-speed", function()
