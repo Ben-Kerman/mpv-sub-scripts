@@ -1,10 +1,11 @@
-local active = false
-local seek_skip = false
-local sped_up = false
 local min_skip_time = 3
 local start_offset = 0
 local end_offset = 1
 local speed_skip_speed = 2.5
+
+local active = false
+local seek_skip = false
+local sped_up = false
 local last_sub_end, next_sub_start
 
 function calc_next_delay()
