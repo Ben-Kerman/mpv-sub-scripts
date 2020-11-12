@@ -10,6 +10,9 @@ local skip_start, skip_end
 function calc_next_delay()
 	local initial_delay = mp.get_property_number("sub-delay")
 
+	local initial_visibility = mp.get_property_bool("sub-visibility")
+	if initial_visibility then mp.set_property_bool("sub-visibility", false) end
+
 	mp.commandv("sub-step", "1")
 	local new_delay = mp.get_property_number("sub-delay")
 	mp.set_property_number("sub-delay", initial_delay)
@@ -17,6 +20,8 @@ function calc_next_delay()
 	local ret
 	if new_delay == initial_delay then ret = nil
 	else ret = -(new_delay - initial_delay) end
+
+	mp.set_property_bool("sub-visibility", initial_visibility)
 
 	return ret
 end
