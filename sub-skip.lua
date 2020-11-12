@@ -60,7 +60,7 @@ function start_seek_skip()
 end
 
 local initial_speed = 1
-function handle_tick(prop_name, time_pos)
+function handle_tick(_, time_pos)
 	if not sped_up and time_pos > last_sub_end + start_offset then
 		if seek_skip then start_seek_skip()
 		else
@@ -86,7 +86,7 @@ function end_skip()
 	last_sub_end, next_sub_start = nil
 end
 
-function handle_sub_text_change(prop_name, sub_text)
+function handle_sub_text_change(_, sub_text)
 	if sub_text == "" then
 		local next_delay = calc_next_delay()
 		local time_pos = mp.get_property_number("time-pos")
