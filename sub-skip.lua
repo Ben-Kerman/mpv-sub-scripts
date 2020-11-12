@@ -69,6 +69,7 @@ function handle_tick(_, time_pos)
 		if seek_skip then start_seek_skip()
 		else
 			initial_speed = mp.get_property_number("speed")
+			mp.set_property("video-sync", "desync")
 			mp.set_property_number("speed", speed_skip_speed)
 			sped_up = true
 		end
@@ -92,6 +93,7 @@ function end_skip()
 	skipping = false
 	sped_up = false
 	mp.set_property_number("speed", initial_speed)
+	mp.set_property("video-sync", "audio")
 	last_sub_end, next_sub_start = nil
 end
 
