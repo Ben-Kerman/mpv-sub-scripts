@@ -37,7 +37,9 @@ seek_skip_timer = mp.add_periodic_timer(128, function()
 		local time_pos = mp.get_property_number("time-pos")
 		local next_delay = calc_next_delay()
 		if next_delay == nil then
-			mp.set_property_number("time-pos", time_pos + min_skip_time)
+			local cache_duration = mp.get_property_number(demuxer-cache-duration)
+			local seek_time = cache_duration and cache_duration or 1
+			mp.set_property_number("time-pos", time_pos + seek_time)
 			seek_skip_timer:resume()
 		else
 			seek_skip_timer:kill()
