@@ -12,24 +12,36 @@ local last_sub_end, next_sub_start
 function calc_next_delay()
 	local initial_delay = mp.get_property_number("sub-delay")
 
+	-- hide subtitles, otherwise sub could briefly flash on screen when stepping
 	local initial_visibility = mp.get_property_bool("sub-visibility")
 	if initial_visibility then mp.set_property_bool("sub-visibility", false) end
 
+	-- get time to next line by adjusting subtitle delay
+	-- so that the next line starts at the current time
 	mp.commandv("sub-step", "1")
 	local new_delay = mp.get_property_number("sub-delay")
 	mp.set_property_number("sub-delay", initial_delay)
 
 	mp.set_property_bool("sub-visibility", initial_visibility)
 
+	-- if the delay didn't change, the next line hasn't been demuxed yet
+	-- (or there are no more lines)
+	-- else calculate difference between previous delay and shifted delay
 	if new_delay == initial_delay then return nil
 	else return -(new_delay - initial_delay) end
 end
+
+-- SEEK SKIP --
+-- Seek skip generally works by directly skipping to the calculated start
+-- of the next line. If it is not available, the script repeatedly seeks
+-- to the end of the demuxer cache until a line is found.
 
 function end_seek_skip(next_sub_begin)
 	mp.set_property_number("time-pos", next_sub_begin - end_offset)
 	end_skip()
 end
 
+-- create timer that determines if the next line has been found and reacts accordingly
 local seek_skip_timer
 seek_skip_timer = mp.add_periodic_timer(128, function()
 	if mp.get_property_bool("seeking") == false then
@@ -37,11 +49,13 @@ seek_skip_timer = mp.add_periodic_timer(128, function()
 		local time_pos = mp.get_property_number("time-pos")
 		local next_delay = calc_next_delay()
 		if next_delay == nil then
+			-- if no line found, seek to end of demuxer cache (potentially unstable!)
 			local cache_duration = mp.get_property_number("demuxer-cache-duration")
 			local seek_time = cache_duration and cache_duration or 1
 			mp.set_property_number("time-pos", time_pos + seek_time)
 			seek_skip_timer:resume()
 		else
+			-- if line found, finish seek skip
 			seek_skip_timer:kill()
 			end_seek_skip(time_pos + next_delay)
 			mp.set_property_bool("pause", false)
@@ -56,6 +70,7 @@ function start_seek_skip()
 	mp.unobserve_property(handle_tick)
 	local next_delay = calc_next_delay()
 	if next_delay ~= nil then
+		-- if next line is visible seek immediately
 		end_seek_skip(mp.get_property_number("time-pos") + next_delay)
 	else
 		mp.set_property_bool("pause", true)
@@ -63,20 +78,27 @@ function start_seek_skip()
 	end
 end
 
+-- SPEED SKIP (mostly) --
+
 local initial_speed = mp.get_property_number("speed")
 local initial_video_sync = mp.get_property("video-sync")
 function handle_tick(_, time_pos)
+	-- time_pos might be nil after the file changes
 	if time_pos == nil then return end
 	if not sped_up and time_pos > last_sub_end + start_offset then
 		if seek_skip then start_seek_skip()
 		else
 			initial_speed = mp.get_property_number("speed")
+			-- Setting video-sync to desync and then audio prevents audio issues
+			-- after resetting speed back to its initial value.
 			initial_video_sync = mp.get_property("video-sync")
 			mp.set_property("video-sync", "desync")
 			mp.set_property_number("speed", speed_skip_speed)
 			sped_up = true
 		end
 	elseif sped_up and next_sub_start == nil then
+		-- next_sub_start == nil means that no next line has been
+		-- found during blind skip
 		local next_delay = calc_next_delay()
 		if next_delay ~= nil then
 			next_sub_start = time_pos + next_delay
@@ -85,6 +107,8 @@ function handle_tick(_, time_pos)
 		end_skip()
 	end
 end
+
+-- INITIALIZATION/SHARED FUNCTIONALITY --
 
 function start_skip()
 	skipping = true
@@ -114,6 +138,8 @@ function handle_sub_text_change(_, sub_text)
 		start_skip()
 	elseif skipping and sub_text ~= nil and sub_text ~= "" then end_skip() end
 end
+
+-- CONFIG --
 
 mp.add_key_binding("Ctrl+n", "sub-skip-toggle", function()
 	if active then
