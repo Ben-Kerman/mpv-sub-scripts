@@ -40,6 +40,6 @@ mp.add_key_binding("n", "sub-pause-toggle", function()
 	active = not active
 end)
 
-mp.add_key_binding("Ctrl+SPACE", "sub-pause-skip-next", function() skip_next = true end)
+mp.add_key_binding("Alt+r", "sub-pause-skip-next", function() skip_next = true end)
 
-mp.add_key_binding("Alt+SPACE", "sub-pause-replay", function() replay_sub() end)
+mp.add_key_binding("Ctrl+r", "sub-pause-replay", function() replay_sub() end)

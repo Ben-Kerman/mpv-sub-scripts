@@ -3,14 +3,14 @@
 An mpv script that automatically pauses after each subtitle line.
 Mostly intended for language learning.
 
-The default key bindings are:
+## Key Bindings
 
 - `n`: toggle auto-pause (`sub-pause-toggle`)
-- `Ctrl+SPACE`: skip next pause (`sub-pause-skip-next`)
-- `Alt+SPACE`: replay active line, always available (`sub-pause-replay`)
+- `Alt+r`: skip next pause (`sub-pause-skip-next`)
+- `Ctrl+r`: replay active line, always available (`sub-pause-replay`)
 
-To use custom key bindings add lines like the following to your `input.conf`
-(where `action_name` is the value in parentheses in the above list):
+To use key bindings other than the defaults above add lines like the following to your
+`input.conf` (where `action_name` is the value in parentheses in the above list):
 
 ```X script-binding <action_name>```
 
