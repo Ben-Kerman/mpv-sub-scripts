@@ -86,6 +86,10 @@ function start_seek_skip()
 end
 
 -- SPEED SKIP (mostly) --
+-- Speed skip works by simply speeding up playback between the end of the last line
+-- (+lead in) until the start of the next one (-lead out).
+-- If the start of the next line is not known, playback is sped up and it's checked
+-- on each tick (i.e. change of time-pos) if the next line has been loaded.
 
 local initial_speed = mp.get_property_number("speed")
 local initial_video_sync = mp.get_property("video-sync")
