@@ -51,12 +51,12 @@ The script works by briefly changing subtitle delay so that the next line starts
 video/audio time, recording the difference between the original and shifted subtitle delay and
 then speeding up or seeking to the start of the next line (calculated from the difference).
 
-This works best if mpv is forced to build a cache even for local fikes by setting `cache=yes`
+This works best if mpv is forced to build a cache even for local files by setting `cache=yes`
 in the config. Alternatively, setting `demuxer-readahead-secs` to 60 or some other value that
-is likely to be larger than the interval between any two subs works as well. 
+is likely to be larger than the interval between any two subs works as well.
 
 If cache or muxer readahead are not set explicitly it is possible for the next subtitle line to
-be unavailable even if it starts withing the next seconds. The script can deal with this but
+be unavailable even if it starts within the next seconds. The script can deal with this but
 works best if one of the config entries from above is set.
 
 ## Key Bindings
@@ -74,10 +74,10 @@ All actions can be rebound as explained for `sub-pause`.
 
 ## Configuration
 
-Create a file at `script-opts/sub-skip.conf` in your mpv config directory:
+Create a file at `script-opts/sub_skip.conf` in your mpv config directory:
 ```
 # To set a value remove the leading # and modify it after the =.
-# All values given here are defaults. Seconds can be decimal.
+# All values given here are defaults. Seconds can be decimal values.
 
 # if true, enable skipping by default
 #default_state=no
