@@ -66,6 +66,9 @@ works best if one of the config entries from above is set.
 - `Ctrl+Alt+-`: decrease skip interval by 0.25s (`sub-skip-decrease-interval`)
 - `Ctrl+Alt++`: increase skip interval by 0.25s (`sub-skip-increase-interval`)
 
+When changing the interval using the keypad +/- keys, it might be necessary to also press shift,
+even if it's not part of the binding.
+
 All actions can be rebound as explained for `sub-pause`.
 
 ## Configuration
