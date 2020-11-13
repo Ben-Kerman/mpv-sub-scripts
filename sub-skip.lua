@@ -1,10 +1,17 @@
-local min_skip_time = 3
-local start_offset = 0
-local end_offset = 1
-local speed_skip_speed = 2.5
+local cfg = {
+	default_state = false,
+	seek_mode_default = false,
+	min_skip_interval = 3,
+	speed_skip_speed = 2.5,
+	lead_in = 0,
+	lead_out = 1
+}
 
-local active = false
-local seek_skip = false
+require 'mp.options'
+read_options(cfg)
+
+local active = cfg.default_state
+local seek_skip = cfg.seek_mode_default
 local skipping = false
 local sped_up = false
 local last_sub_end, next_sub_start
@@ -37,7 +44,7 @@ end
 -- to the end of the demuxer cache until a line is found.
 
 function end_seek_skip(next_sub_begin)
-	mp.set_property_number("time-pos", next_sub_begin - end_offset)
+	mp.set_property_number("time-pos", next_sub_begin - cfg.lead_out)
 	end_skip()
 end
 
@@ -85,7 +92,8 @@ local initial_video_sync = mp.get_property("video-sync")
 function handle_tick(_, time_pos)
 	-- time_pos might be nil after the file changes
 	if time_pos == nil then return end
-	if not sped_up and time_pos > last_sub_end + start_offset then
+
+	if not sped_up and time_pos > last_sub_end + cfg.lead_in then
 		if seek_skip then start_seek_skip()
 		else
 			initial_speed = mp.get_property_number("speed")
@@ -93,7 +101,7 @@ function handle_tick(_, time_pos)
 			-- after resetting speed back to its initial value.
 			initial_video_sync = mp.get_property("video-sync")
 			mp.set_property("video-sync", "desync")
-			mp.set_property_number("speed", speed_skip_speed)
+			mp.set_property_number("speed", cfg.speed_skip_speed)
 			sped_up = true
 		end
 	elseif sped_up and next_sub_start == nil then
@@ -103,7 +111,7 @@ function handle_tick(_, time_pos)
 		if next_delay ~= nil then
 			next_sub_start = time_pos + next_delay
 		end
-	elseif sped_up and time_pos > next_sub_start - end_offset then
+	elseif sped_up and time_pos > next_sub_start - cfg.lead_out then
 		end_skip()
 	end
 end
@@ -131,7 +139,7 @@ function handle_sub_text_change(_, sub_text)
 		local next_delay = calc_next_delay()
 
 		if next_delay ~= nil then
-			if next_delay < min_skip_time then return
+			if next_delay < cfg.min_skip_interval then return
 			else next_sub_start = time_pos + next_delay end
 		end
 		last_sub_end = time_pos
@@ -155,13 +163,13 @@ mp.add_key_binding("Ctrl+n", "sub-skip-toggle", function()
 end)
 
 function change_speed_skip_speed(new_value)
-	speed_skip_speed = new_value
+	cfg.speed_skip_speed = new_value
 	if skipping then mp.set_property_number("speed", new_value) end
 	mp.osd_message("Skip speed: " .. new_value)
 end
 
 function change_min_interval(new_value)
-	min_skip_time = new_value
+	cfg.min_skip_interval = new_value
 	mp.osd_message("Minimum interval: " .. new_value)
 end
 
@@ -171,17 +179,17 @@ mp.add_key_binding("Ctrl+Alt+n", "sub-skip-switch-mode", function()
 end)
 
 mp.add_key_binding("Ctrl+Alt+[", "sub-skip-decrease-speed", function()
-	change_speed_skip_speed(speed_skip_speed - 0.1)
+	change_speed_skip_speed(cfg.speed_skip_speed - 0.1)
 end)
 
 mp.add_key_binding("Ctrl+Alt+]", "sub-skip-increase-speed", function()
-	change_speed_skip_speed(speed_skip_speed + 0.1)
+	change_speed_skip_speed(cfg.speed_skip_speed + 0.1)
 end)
 
 mp.add_key_binding("Ctrl+Alt+-", "sub-skip-decrease-interval", function()
-	change_min_interval(min_skip_time - 0.25)
+	change_min_interval(cfg.min_skip_interval - 0.25)
 end)
 
 mp.add_key_binding("Ctrl+Alt++", "sub-skip-increase-interval", function()
-	change_min_interval(min_skip_time + 0.25)
+	change_min_interval(cfg.min_skip_interval + 0.25)
 end)
