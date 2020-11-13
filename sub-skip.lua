@@ -180,29 +180,29 @@ mp.add_key_binding("Ctrl+Alt+n", "sub-skip-switch-mode", function()
 	mp.osd_message("Seek skip " .. (seek_skip and "enabled" or "disabled"))
 end)
 
-function change_speed_skip_speed(new_value)
+function set_speed_skip_speed(new_value)
 	cfg.speed_skip_speed = new_value
 	if skipping then mp.set_property_number("speed", new_value) end
 	mp.osd_message("Skip speed: " .. new_value)
 end
 
 mp.add_key_binding("Ctrl+Alt+[", "sub-skip-decrease-speed", function()
-	change_speed_skip_speed(cfg.speed_skip_speed - 0.1)
+	set_speed_skip_speed(cfg.speed_skip_speed - 0.1)
 end)
 
 mp.add_key_binding("Ctrl+Alt+]", "sub-skip-increase-speed", function()
-	change_speed_skip_speed(cfg.speed_skip_speed + 0.1)
+	set_speed_skip_speed(cfg.speed_skip_speed + 0.1)
 end)
 
-function change_min_interval(new_value)
+function set_min_interval(new_value)
 	cfg.min_skip_interval = new_value
 	mp.osd_message("Minimum interval: " .. new_value)
 end
 
 mp.add_key_binding("Ctrl+Alt+-", "sub-skip-decrease-interval", function()
-	change_min_interval(cfg.min_skip_interval - 0.25)
+	set_min_interval(cfg.min_skip_interval - 0.25)
 end)
 
 mp.add_key_binding("Ctrl+Alt++", "sub-skip-increase-interval", function()
-	change_min_interval(cfg.min_skip_interval + 0.25)
+	set_min_interval(cfg.min_skip_interval + 0.25)
 end)
