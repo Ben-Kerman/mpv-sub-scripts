@@ -147,16 +147,26 @@ function handle_sub_text_change(_, sub_text)
 	elseif skipping and sub_text ~= nil and sub_text ~= "" then end_skip() end
 end
 
+function activate()
+	mp.observe_property("sub-text", "string", handle_sub_text_change)
+end
+
+function deactivate()
+	seek_skip_timer:kill()
+	end_skip()
+	mp.unobserve_property(handle_sub_text_change)
+end
+
+if active then activate() end
+
 -- CONFIG --
 
 mp.add_key_binding("Ctrl+n", "sub-skip-toggle", function()
 	if active then
-		seek_skip_timer:kill()
-		end_skip()
-		mp.unobserve_property(handle_sub_text_change)
+		deactivate()
 		mp.osd_message("Non-subtitle skip disabled")
 	else
-		mp.observe_property("sub-text", "string", handle_sub_text_change)
+		activate()
 		mp.osd_message("Non-subtitle skip enabled")
 	end
 	active = not active
