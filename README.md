@@ -12,11 +12,15 @@ Mostly intended for language learning.
 To use key bindings other than the defaults above add lines like the following to your
 `input.conf` (where `action_name` is the value in parentheses in the above list):
 
-```X script-binding <action_name>```
+```
+X script-binding <action_name>
+```
 
 If you want a binding for both replaying and skipping add a line like this:
 
-```Ctrl+Alt+SPACE script-binding sub-pause-replay; script-binding sub-pause-skip-next```
+```
+Ctrl+Alt+SPACE script-binding sub-pause-replay; script-binding sub-pause-skip-next
+```
 
 ## Known Issues
 
