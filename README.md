@@ -42,6 +42,8 @@ This script allows automatically skipping parts of a video that don't contain an
 Skipping can be done either by speeding up playback while no subtitles are present or by
 seeking to the start of the next subtitle line, skipping the interval between lines entirely.
 
+The script is possibly unstable currently, so use at your own risk.
+
 ## How To Use
 
 The script works by briefly changing subtitle delay so that the next line starts at the current
