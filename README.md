@@ -57,7 +57,7 @@ be unavailable even if it starts withing the next seconds. The script can deal w
 works best if one of the config entries from above is set.
 
 ## Key Bindings
-
+- `Ctrl+n`: activate skipping (`sub-skip-toggle`)
 - `Ctrl+Alt+n`: toggle seek skip mode (`sub-skip-switch-mode`)
 - `Ctrl+Alt+[`: decrease skip speed by 0.1 (`sub-skip-decrease-speed`)
 - `Ctrl+Alt+]`: increase skip speed by 0.1 (`sub-skip-increase-speed`)
@@ -65,3 +65,29 @@ works best if one of the config entries from above is set.
 - `Ctrl+Alt++`: increase skip interval by 0.25s (`sub-skip-increase-interval`)
 
 All actions can be rebound as explained for `sub-pause`.
+
+## Configuration
+
+Create a file at `script-opts/sub-skip.conf` in your mpv config directory:
+```
+# To set a value remove the leading # and modify it after the =.
+# All values given here are defaults. Seconds can be decimal.
+
+# if true, enable skipping by default
+#default_state=no
+
+# if true, use seek mode by default
+#seek_mode_default=no
+
+# any interval between subtitle lines longer than this value in seconds will be skipped
+#min_skip_interval=3
+
+# what speed to use while skipping if not in seek mode
+#speed_skip_speed=2.5
+
+# how many seconds after the end of a line to wait for before starting to skip
+#lead_in=0
+
+# how many seconds before the start of the next line to stop skipping at
+#lead_out=1
+```
