@@ -149,12 +149,16 @@ end
 
 function activate()
 	mp.observe_property("sub-text", "string", handle_sub_text_change)
+	mp.msg.warn("activated")
+	active = true
 end
 
 function deactivate()
 	seek_skip_timer:kill()
 	end_skip()
 	mp.unobserve_property(handle_sub_text_change)
+	mp.msg.warn("deactivated")
+	active = false
 end
 
 if active then activate() end
@@ -169,7 +173,6 @@ mp.add_key_binding("Ctrl+n", "sub-skip-toggle", function()
 		activate()
 		mp.osd_message("Non-subtitle skip enabled")
 	end
-	active = not active
 end)
 
 function change_speed_skip_speed(new_value)
