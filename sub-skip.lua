@@ -6,9 +6,17 @@ local cfg = {
 	lead_in = 0,
 	lead_out = 1
 }
+local script_name = mp.get_script_name()
 
 require 'mp.options'
-read_options(cfg)
+read_options(cfg, script_name, function(changes)
+	if (changes.default_state) then
+		mp.commandv('script-message-to', script_name, 'sub-skip-toggle')
+	end
+	if (changes.seek_mode_default) then
+		mp.commandv('script-message-to', script_name, 'sub-skip-switch-mode')
+	end
+end)
 
 local active = cfg.default_state
 local seek_skip = cfg.seek_mode_default
