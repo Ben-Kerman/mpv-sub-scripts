@@ -12,6 +12,8 @@ require 'mp.options'
 read_options(cfg, script_name, function(changes)
 	if changes.default_state then toggle_script() end
 	if changes.seek_mode_default then switch_mode() end
+	if changes.min_skip_interval then set_min_interval(cfg.min_skip_interval) end
+	if changes.speed_skip_speed then set_speed_skip_speed(cfg.speed_skip_speed) end
 end)
 
 local active = cfg.default_state
