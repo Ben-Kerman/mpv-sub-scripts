@@ -4,7 +4,9 @@ local cfg = {
 	min_skip_interval = 3,
 	speed_skip_speed = 2.5,
 	lead_in = 0,
-	lead_out = 1
+	lead_out = 1,
+	speed_skip_speed_delta = 0.1,
+	min_skip_interval_delta = 0.25
 }
 local script_name = mp.get_script_name()
 
@@ -201,11 +203,11 @@ function set_speed_skip_speed(new_value)
 end
 
 mp.add_key_binding("Ctrl+Alt+[", "sub-skip-decrease-speed", function()
-	set_speed_skip_speed(cfg.speed_skip_speed - 0.1)
+	set_speed_skip_speed(cfg.speed_skip_speed - cfg.speed_skip_speed_delta)
 end)
 
 mp.add_key_binding("Ctrl+Alt+]", "sub-skip-increase-speed", function()
-	set_speed_skip_speed(cfg.speed_skip_speed + 0.1)
+	set_speed_skip_speed(cfg.speed_skip_speed + cfg.speed_skip_speed_delta)
 end)
 
 function set_min_interval(new_value)
@@ -214,9 +216,9 @@ function set_min_interval(new_value)
 end
 
 mp.add_key_binding("Ctrl+Alt+-", "sub-skip-decrease-interval", function()
-	set_min_interval(cfg.min_skip_interval - 0.25)
+	set_min_interval(cfg.min_skip_interval - cfg.min_skip_interval_delta)
 end)
 
 mp.add_key_binding("Ctrl+Alt++", "sub-skip-increase-interval", function()
-	set_min_interval(cfg.min_skip_interval + 0.25)
+	set_min_interval(cfg.min_skip_interval + cfg.min_skip_interval_delta)
 end)

@@ -83,10 +83,10 @@ Create a file at `script-opts/sub_skip.conf` in your mpv config directory:
 # To set a value remove the leading # and modify it after the =.
 # All values given here are defaults. Seconds can be decimal values.
 
-# if true, enable skipping by default
+# if set to 'yes', enable skipping by default
 #default_state=no
 
-# if true, use seek mode by default
+# if set to 'yes', use seek mode by default
 #seek_mode_default=no
 
 # any interval between subtitle lines longer than this value in seconds will be skipped
@@ -100,4 +100,10 @@ Create a file at `script-opts/sub_skip.conf` in your mpv config directory:
 
 # how many seconds before the start of the next line to stop skipping at
 #lead_out=1
+
+# how much to change skip speed by when invoking sub-skip-{de,in}crease-speed
+#speed_skip_speed_delta=0.1
+
+# how many seconds to change the minimum interval by when invoking sub-skip-{de,in}crease-interval
+#min_skip_interval_delta=0.25
 ```
