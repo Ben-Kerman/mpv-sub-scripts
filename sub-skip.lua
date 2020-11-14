@@ -10,12 +10,8 @@ local script_name = mp.get_script_name()
 
 require 'mp.options'
 read_options(cfg, script_name, function(changes)
-	if (changes.default_state) then
-		mp.commandv('script-message-to', script_name, 'sub-skip-toggle')
-	end
-	if (changes.seek_mode_default) then
-		mp.commandv('script-message-to', script_name, 'sub-skip-switch-mode')
-	end
+	if changes.default_state then toggle_script() end
+	if changes.seek_mode_default then switch_mode() end
 end)
 
 local active = cfg.default_state
@@ -177,7 +173,7 @@ if active then activate() end
 
 -- CONFIG --
 
-mp.add_key_binding("Ctrl+n", "sub-skip-toggle", function()
+function toggle_script()
 	if active then
 		deactivate()
 		mp.osd_message("Non-subtitle skip disabled")
@@ -185,12 +181,16 @@ mp.add_key_binding("Ctrl+n", "sub-skip-toggle", function()
 		activate()
 		mp.osd_message("Non-subtitle skip enabled")
 	end
-end)
+end
 
-mp.add_key_binding("Ctrl+Alt+n", "sub-skip-switch-mode", function()
+mp.add_key_binding("Ctrl+n", "sub-skip-toggle", toggle_script)
+
+function switch_mode()
 	seek_skip = not seek_skip
 	mp.osd_message("Seek skip " .. (seek_skip and "enabled" or "disabled"))
-end)
+end
+
+mp.add_key_binding("Ctrl+Alt+n", "sub-skip-switch-mode", switch_mode)
 
 function set_speed_skip_speed(new_value)
 	cfg.speed_skip_speed = new_value
