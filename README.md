@@ -10,7 +10,7 @@ Mostly intended for language learning.
 - `Ctrl+r`: replay active line, always available (`sub-pause-replay`)
 
 To use key bindings other than the defaults above add lines like the following to your
-`input.conf` (where `action_name` is the value in parentheses in the above list):
+`input.conf` (where `<action_name>` is the value in parentheses in the above list):
 
 ```
 X script-binding <action_name>
@@ -59,8 +59,8 @@ This works best if mpv is forced to build a cache even for local files by settin
 in the config. Alternatively, setting `demuxer-readahead-secs` to 60 or some other value that
 is likely to be larger than the interval between any two subs works as well.
 
-If cache or muxer readahead are not set explicitly it is possible for the next subtitle line to
-be unavailable even if it starts within the next seconds. The script can deal with this but
+If cache or demuxer readahead are not set explicitly it is possible for the next subtitle line to
+be unavailable even if it starts within the next few seconds. The script can deal with this but
 works best if one of the config entries from above is set.
 
 ## Key Bindings
@@ -71,7 +71,7 @@ works best if one of the config entries from above is set.
 - `Ctrl+Alt+-`: decrease skip interval by 0.25s (`sub-skip-decrease-interval`)
 - `Ctrl+Alt++`: increase skip interval by 0.25s (`sub-skip-increase-interval`)
 
-When changing the interval using the keypad +/- keys, it might be necessary to also press shift,
+When changing the interval using the numpad +/- keys, it might be necessary to also press shift,
 even if it's not part of the binding.
 
 All actions can be rebound as explained for `sub-pause`.
@@ -107,3 +107,7 @@ Create a file at `script-opts/sub_skip.conf` in your mpv config directory:
 # how many seconds to change the minimum interval by when invoking sub-skip-{de,in}crease-interval
 #min_skip_interval_delta=0.25
 ```
+
+---
+
+`sub-skip` is inspired by and partially based on `speed-transition` from https://github.com/zenyd/mpv-scripts, but rewritten from scratch.
