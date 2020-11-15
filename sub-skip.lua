@@ -161,7 +161,6 @@ end
 
 function activate()
 	mp.observe_property("sub-text", "string", handle_sub_text_change)
-	mp.msg.warn("activated")
 	active = true
 end
 
@@ -169,7 +168,6 @@ function deactivate()
 	seek_skip_timer:kill()
 	end_skip()
 	mp.unobserve_property(handle_sub_text_change)
-	mp.msg.warn("deactivated")
 	active = false
 end
 
