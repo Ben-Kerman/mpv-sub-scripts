@@ -26,6 +26,9 @@ function handle_sub_text_change(_, sub_text)
 end
 
 function replay_sub()
+	-- prevent pause if pausing at start is enabled
+	if pause_at_start then skip_next = true end
+
 	local sub_start = mp.get_property_number("sub-start")
 	if sub_start ~= nil then
 		mp.set_property("time-pos", sub_start + mp.get_property_number("sub-delay"))
