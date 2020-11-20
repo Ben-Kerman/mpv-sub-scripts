@@ -9,16 +9,16 @@ function pause()
 	else mp.set_property("pause", "yes") end
 end
 
-function handle_tick(prop_name, time_pos)
+function handle_tick(_, time_pos)
 	if time_pos ~= nil and pause_at - time_pos < 0.1 then
 		if pause_at_end then pause() end
 		mp.unobserve_property(handle_tick)
 	end
 end
 
-function handle_sub_text_change(prop_name, sub_text)
+function handle_sub_text_change(_, sub_text)
 	mp.unobserve_property(handle_tick)
-	if sub_text ~= nil and sub_text ~= '' then
+	if sub_text ~= nil and sub_text ~= "" then
 		if pause_at_start then pause() end
 		pause_at = mp.get_property_number("sub-end") + mp.get_property_number("sub-delay")
 		mp.observe_property("time-pos", "number", handle_tick)
@@ -26,9 +26,9 @@ function handle_sub_text_change(prop_name, sub_text)
 end
 
 function replay_sub()
-	local sub_start = mp.get_property_number('sub-start')
+	local sub_start = mp.get_property_number("sub-start")
 	if sub_start ~= nil then
-		mp.set_property("time-pos", sub_start + mp.get_property_number('sub-delay'))
+		mp.set_property("time-pos", sub_start + mp.get_property_number("sub-delay"))
 		mp.set_property("pause", "no")
 	end
 end
