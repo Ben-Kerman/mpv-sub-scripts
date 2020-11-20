@@ -1,11 +1,12 @@
 # sub-pause
 
-An mpv script that automatically pauses after each subtitle line.
+An mpv script that automatically pauses before and/or after each subtitle line.
 Mostly intended for language learning.
 
 ## Key Bindings
 
-- `n`: toggle auto-pause (`sub-pause-toggle`)
+- `n`: toggle auto-pause at end of line (`sub-pause-toggle-end`)
+- `(none)`: toggle auto-pause at start of line (`sub-pause-toggle-start`)
 - `Alt+r`: skip next pause (`sub-pause-skip-next`)
 - `Ctrl+r`: replay active line, always available (`sub-pause-replay`)
 
@@ -16,6 +17,7 @@ To use key bindings other than the defaults above add lines like the following t
 X script-binding <action_name>
 ```
 
+`sub-pause-toggle-start` doesn't have a default binding and must to be assigned manually.
 If you want a binding for both replaying and skipping add a line like this:
 
 ```
