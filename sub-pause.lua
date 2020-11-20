@@ -34,6 +34,17 @@ function replay_sub()
 	end
 end
 
+function display_state()
+	local msg
+	if active then
+		msg = "Subtitle pausing enabled ("
+			.. (pause_at_start and "start" or "")
+			.. ((pause_at_start and pause_at_end) and " and " or "")
+			.. (pause_at_end and "end" or "") .. ")"
+	else msg = "Subtitle pausing disabled" end
+	mp.osd_message(msg)
+end
+
 function toggle()
 	if active then
 		if not pause_at_start and not pause_at_end then
@@ -42,13 +53,12 @@ function toggle()
 			mp.unobserve_property(handle_sub_text_change)
 			mp.unobserve_property(handle_tick)
 			active = false
-			mp.osd_message("Subtitle pausing disabled")
 		end
 	else
 		mp.observe_property("sub-text", "string", handle_sub_text_change)
 		active = true
-		mp.osd_message("Subtitle pausing enabled")
 	end
+	display_state()
 end
 
 mp.add_key_binding(nil, "sub-pause-toggle-start", function()
