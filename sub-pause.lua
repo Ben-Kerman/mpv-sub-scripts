@@ -1,11 +1,15 @@
 local active = false
+local pause_at_start = false
+local pause_at_end = false
 local skip_next = false
 local pause_at = 0
 
 function handle_tick(prop_name, time_pos)
 	if time_pos ~= nil and pause_at - time_pos < 0.1 then
-		if skip_next then skip_next = false
-		else mp.set_property("pause", "yes") end
+		if pause_at_end then
+			if skip_next then skip_next = false
+			else mp.set_property("pause", "yes") end
+		end
 		mp.unobserve_property(handle_tick)
 	end
 end
@@ -13,6 +17,10 @@ end
 function handle_sub_text_change(prop_name, sub_text)
 	mp.unobserve_property(handle_tick)
 	if sub_text ~= nil and sub_text ~= '' then
+		if pause_at_start then
+			if skip_next then skip_next = false
+			else mp.set_property("pause", "yes") end
+		end
 		pause_at = mp.get_property_number("sub-end") + mp.get_property_number("sub-delay")
 		mp.observe_property("time-pos", "number", handle_tick)
 	end
@@ -23,21 +31,34 @@ function replay_sub()
 	if sub_start ~= nil then
 		mp.set_property("time-pos", sub_start + mp.get_property_number('sub-delay'))
 		mp.set_property("pause", "no")
-	end 
+	end
 end
 
-mp.add_key_binding("n", "sub-pause-toggle", function()
+function toggle()
 	if active then
-		pause_at = 0
-		skip_next = false
-		mp.unobserve_property(handle_sub_text_change)
-		mp.unobserve_property(handle_tick)
-		mp.osd_message("Subtitle pausing disabled")
+		if not pause_at_start and not pause_at_end then
+			pause_at = 0
+			skip_next = false
+			mp.unobserve_property(handle_sub_text_change)
+			mp.unobserve_property(handle_tick)
+			active = false
+			mp.osd_message("Subtitle pausing disabled")
+		end
 	else
 		mp.observe_property("sub-text", "string", handle_sub_text_change)
+		active = true
 		mp.osd_message("Subtitle pausing enabled")
 	end
-	active = not active
+end
+
+mp.add_key_binding(nil, "sub-pause-toggle-start", function()
+	pause_at_start = not pause_at_start
+	toggle()
+end)
+
+mp.add_key_binding("n", "sub-pause-toggle-end", function()
+	pause_at_end = not pause_at_end
+	toggle()
 end)
 
 mp.add_key_binding("Alt+r", "sub-pause-skip-next", function() skip_next = true end)
