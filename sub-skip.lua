@@ -202,11 +202,11 @@ end
 
 mp.add_key_binding("Ctrl+Alt+[", "sub-skip-decrease-speed", function()
 	set_speed_skip_speed(cfg.speed_skip_speed - cfg.speed_skip_speed_delta)
-end)
+end, {repeatable = true})
 
 mp.add_key_binding("Ctrl+Alt+]", "sub-skip-increase-speed", function()
 	set_speed_skip_speed(cfg.speed_skip_speed + cfg.speed_skip_speed_delta)
-end)
+end, {repeatable = true})
 
 function set_min_interval(new_value)
 	cfg.min_skip_interval = new_value
@@ -215,8 +215,8 @@ end
 
 mp.add_key_binding("Ctrl+Alt+-", "sub-skip-decrease-interval", function()
 	set_min_interval(cfg.min_skip_interval - cfg.min_skip_interval_delta)
-end)
+end, {repeatable = true})
 
 mp.add_key_binding("Ctrl+Alt++", "sub-skip-increase-interval", function()
 	set_min_interval(cfg.min_skip_interval + cfg.min_skip_interval_delta)
-end)
+end, {repeatable = true})
