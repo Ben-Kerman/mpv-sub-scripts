@@ -17,7 +17,7 @@ To use key bindings other than the defaults above add lines like the following t
 X script-binding <action_name>
 ```
 
-`sub-pause-toggle-start` doesn't have a default binding and must to be assigned manually.
+`sub-pause-toggle-start` doesn't have a default binding and must be assigned manually.
 If you want a binding for both replaying and skipping add a line like this:
 
 ```
@@ -64,7 +64,7 @@ works best if one of the config entries from above is set.
 
 ## Key Bindings
 - `Ctrl+n`: activate skipping (`sub-skip-toggle`)
-- `Ctrl+Alt+n`: toggle seek skip mode (`sub-skip-switch-mode`)
+- `Ctrl+Alt+n`: toggle between speedup and seek skip (`sub-skip-switch-mode`)
 - `Ctrl+Alt+[`: decrease skip speed by 0.1 (`sub-skip-decrease-speed`)
 - `Ctrl+Alt+]`: increase skip speed by 0.1 (`sub-skip-increase-speed`)
 - `Ctrl+Alt+-`: decrease skip interval by 0.25s (`sub-skip-decrease-interval`)
