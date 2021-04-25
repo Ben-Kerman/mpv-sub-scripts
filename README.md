@@ -14,8 +14,18 @@ To use key bindings other than the defaults above add lines like the following t
 `input.conf` (where `<action_name>` is the value in parentheses in the above list):
 
 ```
-X script-binding <action_name>
+X script-binding sub_pause/<action_name>
 ```
+
+`sub_pause/` can be left out, however events triggered from bindings defined
+without it will be sent to all scripts, which can lead to conflicts if two
+scripts use the same action name.
+
+When using scoped actions, the script ID before the `/` is derived from the
+filename of the script, with the extension removed and all characters except
+alphanumeric ASCII characters (A-Z, a-z, 0-9) replaced by `_`.
+
+---
 
 `sub-pause-toggle-start` doesn't have a default binding and must be assigned manually.
 If you want a binding for both replaying and skipping add a line like this:
