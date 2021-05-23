@@ -64,9 +64,10 @@ The script works by briefly changing subtitle delay so that the next line starts
 video/audio time, recording the difference between the original and shifted subtitle delay and
 then speeding up or seeking to the start of the next line (calculated from the difference).
 
-This works best if mpv is forced to build a cache even for local files by setting `cache=yes`
-in the config. Alternatively, setting `demuxer-readahead-secs` to 60 or some other value that
-is likely to be larger than the interval between any two subs works as well.
+This works best if mpv is forced to always demultiplex enough of the video for the next
+subtitle line to be almost always available by setting `demuxer-readahead-secs` to a value
+between 60-120 in the config. Alternatively, enabling cache for all videos with `cache=yes`
+also works.
 
 If cache or demuxer readahead are not set explicitly it is possible for the next subtitle line to
 be unavailable even if it starts within the next few seconds. The script can deal with this but
