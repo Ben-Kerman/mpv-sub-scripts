@@ -1,9 +1,16 @@
+local cfg = {
+	default_start = false,
+	default_end = false,
+	end_delta = 0.1,
+	hide_while_playing = false,
+	unpause_time = 0,
+	unpause_override = "SPACE"
+}
+require("mp.options").read_options(cfg)
+
 local active = false
-local pause_at_start = false
-local pause_at_end = false
-local hide_while_playing = true
-local unpause_time = 0
-local unpause_override = "SPACE"
+local pause_at_start = cfg.default_start
+local pause_at_end = cfg.default_end
 local skip_next = false
 local pause_at = 0
 
@@ -14,7 +21,7 @@ function set_visibility(state)
 end
 
 function handle_pause(_, paused)
-	if hide_while_playing and not paused then
+	if cfg.hide_while_playing and not paused then
 		set_visibility(false)
 		mp.unobserve_property(handle_pause)
 	end
@@ -24,15 +31,15 @@ function pause()
 	if skip_next then skip_next = false
 	else
 		mp.set_property_bool("pause", true)
-		if hide_while_playing then
+		if cfg.hide_while_playing then
 			set_visibility(true)
 		end
-		if unpause_time > 0 then
-			local timer = mp.add_timeout(unpause_time, function()
+		if cfg.unpause_time > 0 then
+			local timer = mp.add_timeout(cfg.unpause_time, function()
 				mp.set_property_bool("pause", false)
 				mp.remove_key_binding("unpause-override")
 			end)
-			mp.add_forced_key_binding(unpause_override, "unpause-override", function()
+			mp.add_forced_key_binding(cfg.unpause_override, "unpause-override", function()
 				timer:kill()
 				mp.remove_key_binding("unpause-override")
 			end)
@@ -42,7 +49,7 @@ function pause()
 end
 
 function handle_tick(_, time_pos)
-	if time_pos ~= nil and pause_at - time_pos < 0.1 then
+	if time_pos ~= nil and pause_at - time_pos < cfg.end_delta then
 		if pause_at_end then pause() end
 		mp.unobserve_property(handle_tick)
 	end
@@ -89,12 +96,12 @@ function toggle()
 			mp.unobserve_property(handle_sub_text_change)
 			mp.unobserve_property(handle_tick)
 			active = false
-			if hide_while_playing then
+			if cfg.hide_while_playing then
 				set_visibility(saved_visibility)
 			end
 		end
 	else
-		if hide_while_playing then
+		if cfg.hide_while_playing then
 			saved_visibility = mp.get_property_bool("sub-visibility")
 			set_visibility(false)
 		end
@@ -117,3 +124,7 @@ end)
 mp.add_key_binding("Alt+r", "sub-pause-skip-next", function() skip_next = true end)
 
 mp.add_key_binding("Ctrl+r", "sub-pause-replay", function() replay_sub() end)
+
+if pause_at_start or pause_at_end then
+	toggle()
+end
