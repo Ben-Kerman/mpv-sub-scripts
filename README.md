@@ -101,12 +101,12 @@ be unavailable even if it starts within the next few seconds. The script can dea
 works best if one of the config entries from above is set.
 
 ## Key Bindings
-- `Ctrl+n`: activate skipping (`sub-skip-toggle`)
-- `Ctrl+Alt+n`: toggle between speedup and seek skip (`sub-skip-switch-mode`)
-- `Ctrl+Alt+[`: decrease skip speed by 0.1 (`sub-skip-decrease-speed`)
-- `Ctrl+Alt+]`: increase skip speed by 0.1 (`sub-skip-increase-speed`)
-- `Ctrl+Alt+-`: decrease skip interval by 0.25s (`sub-skip-decrease-interval`)
-- `Ctrl+Alt++`: increase skip interval by 0.25s (`sub-skip-increase-interval`)
+- `Ctrl+n`: activate skipping (`toggle`)
+- `Ctrl+Alt+n`: toggle between speedup and seek skip (`switch-mode`)
+- `Ctrl+Alt+[`: decrease skip speed by 0.1 (`decrease-speed`)
+- `Ctrl+Alt+]`: increase skip speed by 0.1 (`increase-speed`)
+- `Ctrl+Alt+-`: decrease skip interval by 0.25s (`decrease-interval`)
+- `Ctrl+Alt++`: increase skip interval by 0.25s (`increase-interval`)
 
 When changing the interval using the numpad +/- keys, it might be necessary to also press shift,
 even if it's not part of the binding.
