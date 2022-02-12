@@ -10,47 +10,74 @@ Mostly intended for language learning.
 - `Alt+r`: skip next pause (`skip-next`)
 - `Ctrl+r`: replay active line, always available (`replay`)
 
-To use key bindings other than the defaults above add lines like the following to your
-`input.conf` (where `<action_name>` is the value in parentheses in the above list):
-
+To use a key binding other than the defaults above add a line like the
+following to your `input.conf` (where `X` is the binding and `<action_id>`
+is the value in parentheses in the list above):
 ```
-X script-binding sub_pause/<action_name>
+X script-binding sub_pause/<action_id>
 ```
 
-`sub_pause/` can be left out, however events triggered from bindings defined
-without it will be sent to all scripts, which can lead to conflicts if two
-scripts use the same action name.
+`sub-pause-toggle-start` doesn't have a default binding and must be assigned
+manually.
 
-When using scoped actions, the script ID before the `/` is derived from the
-filename of the script, with the extension removed and all characters except
-alphanumeric ASCII characters (A-Z, a-z, 0-9) replaced by `_`.
-
----
-
-`sub-pause-toggle-start` doesn't have a default binding and must be assigned manually.
 If you want a binding for both replaying and skipping add a line like this:
-
 ```
 Ctrl+Alt+SPACE script-binding sub-pause-replay; script-binding sub-pause-skip-next
 ```
 
+---
+
+`sub_pause/` can be left out, however events triggered from bindings defined
+without it will be sent to all scripts, which can lead to conflicts if two
+scripts use the same action ID.
+
+When using scoped actions, the script ID before `/` is derived from script's
+filename, with the extension removed and all characters except alphanumeric
+ASCII characters (A-Z, a-z, 0-9) replaced by `_`.
+
+## Configuration
+
+Create a file at `script-opts/sub_pause.conf` in your mpv config directory:
+```
+# To set a value remove the leading # and modify it after the =.
+# All values given here are defaults. Seconds can be decimal values.
+
+# if set to 'yes', enable pausing at the start of each line by default
+#default_start=no
+
+# if set to 'yes', enable pausing at the end of each line by default
+#default_end=no
+
+# pause roughly this many seconds before the end of each line
+# very low values can result in the line no longer being active after pausing
+#end_delta=0.1
+
+# if autopausing is enabled, hide subtitles while not paused
+#hide_while_playing=no
+
+# automatically resume playback this many seconds after autopausing
+# no effect if less than or equal to zero
+#unpause_time=0
+
+# if unpause_time is set, prevent the next automatic unpause by pressing this key
+# can be anything that would be an acceptable key binding in mpv's input.conf
+#unpause_override=SPACE
+```
+
 ## Known Issues
 
-If there are multiple subtitles visible at the same time (e.g. one at
-the top and one at the bottom, or on-screen text with SubStation Alpha
-(ASS)) the script will only pause at the end of the last visible line.
-
-To my knowledge, there is no simple fix for this due to the way mpv
-presents subtitle timing information to user scripts.
-
-A more involved solution would be to parse the sub file externally,
-but that would probably not be worth the effort considering how rarely
-the issue is likely to occur.
+If there are multiple subtitles visible at the same time (e.g. one at the top
+and one at the bottom, or on-screen text with SubStation Alpha(ASS) subs) the
+script will only pause at the end of the last visible line. While it would be
+possible to fix this at least some of the time by saving every change in the
+subtitle end time this(in my opinion) doesn't justify the additional
+complexity considering how rare such situations are.
 
 ---
 
 If you come across any other problems while using the script feel free
 to open a GitHub issue or send a pull request.
+
 
 # sub-skip
 
