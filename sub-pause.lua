@@ -55,11 +55,11 @@ function handle_tick(_, time_pos)
 	end
 end
 
-function handle_sub_text_change(_, sub_text)
+function handle_sub_change(_, sub_end)
 	mp.unobserve_property(handle_tick)
-	if sub_text ~= nil and sub_text ~= "" then
+	if sub_end ~= nil then
 		if pause_at_start then pause() end
-		pause_at = mp.get_property_number("sub-end") + mp.get_property_number("sub-delay")
+		pause_at = sub_end + mp.get_property_number("sub-delay")
 		mp.observe_property("time-pos", "number", handle_tick)
 	end
 end
@@ -93,7 +93,7 @@ function toggle()
 		if not pause_at_start and not pause_at_end then
 			pause_at = 0
 			skip_next = false
-			mp.unobserve_property(handle_sub_text_change)
+			mp.unobserve_property(handle_sub_change)
 			mp.unobserve_property(handle_tick)
 			active = false
 			if cfg.hide_while_playing then
@@ -105,7 +105,7 @@ function toggle()
 			saved_visibility = mp.get_property_bool("sub-visibility")
 			set_visibility(false)
 		end
-		mp.observe_property("sub-text", "string", handle_sub_text_change)
+		mp.observe_property("sub-end", "number", handle_sub_change)
 		active = true
 	end
 	display_state()
