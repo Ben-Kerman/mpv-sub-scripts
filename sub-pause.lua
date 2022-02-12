@@ -101,6 +101,7 @@ function toggle()
 			if cfg.hide_while_playing then
 				set_visibility(saved_visibility)
 			end
+			mp.unobserve_property(handle_pause)
 		end
 	else
 		if cfg.hide_while_playing then
