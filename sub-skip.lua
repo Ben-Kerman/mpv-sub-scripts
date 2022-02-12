@@ -142,8 +142,8 @@ function end_skip()
 	last_sub_end, next_sub_start = nil
 end
 
-function handle_sub_text_change(_, sub_text)
-	if sub_text == "" and not skipping then
+function handle_sub_change(_, sub_end)
+	if not sub_end and not skipping then
 		local time_pos = mp.get_property_number("time-pos")
 		local next_delay = calc_next_delay()
 
@@ -153,18 +153,18 @@ function handle_sub_text_change(_, sub_text)
 		end
 		last_sub_end = time_pos
 		start_skip()
-	elseif skipping and sub_text ~= nil and sub_text ~= "" then end_skip() end
+	elseif skipping and sub_end then end_skip() end
 end
 
 function activate()
-	mp.observe_property("sub-text", "string", handle_sub_text_change)
+	mp.observe_property("sub-end", "number", handle_sub_change)
 	active = true
 end
 
 function deactivate()
 	seek_skip_timer:kill()
 	end_skip()
-	mp.unobserve_property(handle_sub_text_change)
+	mp.unobserve_property(handle_sub_change)
 	active = false
 end
 
