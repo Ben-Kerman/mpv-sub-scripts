@@ -1,3 +1,5 @@
+-- feel free to modify and/or redistribute as long as you give credit to the original creator; © 2022 Ben Kerman
+
 local cfg = {
 	default_state = false,
 	seek_mode_default = false,
