@@ -1,12 +1,26 @@
 local active = false
 local pause_at_start = false
 local pause_at_end = false
+local unpause_time = 0
+local unpause_override = "SPACE"
 local skip_next = false
 local pause_at = 0
 
 function pause()
 	if skip_next then skip_next = false
-	else mp.set_property("pause", "yes") end
+	else
+		mp.set_property_bool("pause", true)
+		if unpause_time > 0 then
+			local timer = mp.add_timeout(unpause_time, function()
+				mp.set_property_bool("pause", false)
+				mp.remove_key_binding("unpause-override")
+			end)
+			mp.add_forced_key_binding(unpause_override, "unpause-override", function()
+				timer:kill()
+				mp.remove_key_binding("unpause-override")
+			end)
+		end
+	end
 end
 
 function handle_tick(_, time_pos)
