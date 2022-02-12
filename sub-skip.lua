@@ -8,10 +8,7 @@ local cfg = {
 	speed_skip_speed_delta = 0.1,
 	min_skip_interval_delta = 0.25
 }
-local script_name = mp.get_script_name()
-
-require 'mp.options'
-read_options(cfg, script_name, function(changes)
+require("mp.options").read_options(cfg, nil, function(changes)
 	if changes.default_state then toggle_script() end
 	if changes.seek_mode_default then switch_mode() end
 	if changes.min_skip_interval then set_min_interval(cfg.min_skip_interval) end
