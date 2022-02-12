@@ -1,15 +1,32 @@
 local active = false
 local pause_at_start = false
 local pause_at_end = false
+local hide_while_playing = true
 local unpause_time = 0
 local unpause_override = "SPACE"
 local skip_next = false
 local pause_at = 0
 
+function set_visibility(state)
+	mp.set_property_bool("sub-visibility", state)
+	-- force OSD/sub redraw
+	mp.osd_message(" ", 0.001)
+end
+
+function handle_pause(_, paused)
+	if hide_while_playing and not paused then
+		set_visibility(false)
+		mp.unobserve_property(handle_pause)
+	end
+end
+
 function pause()
 	if skip_next then skip_next = false
 	else
 		mp.set_property_bool("pause", true)
+		if hide_while_playing then
+			set_visibility(true)
+		end
 		if unpause_time > 0 then
 			local timer = mp.add_timeout(unpause_time, function()
 				mp.set_property_bool("pause", false)
@@ -20,6 +37,7 @@ function pause()
 				mp.remove_key_binding("unpause-override")
 			end)
 		end
+		mp.observe_property("pause", "bool", handle_pause)
 	end
 end
 
@@ -61,6 +79,8 @@ function display_state()
 	mp.osd_message(msg)
 end
 
+local saved_visibility = true
+
 function toggle()
 	if active then
 		if not pause_at_start and not pause_at_end then
@@ -69,8 +89,15 @@ function toggle()
 			mp.unobserve_property(handle_sub_text_change)
 			mp.unobserve_property(handle_tick)
 			active = false
+			if hide_while_playing then
+				set_visibility(saved_visibility)
+			end
 		end
 	else
+		if hide_while_playing then
+			saved_visibility = mp.get_property_bool("sub-visibility")
+			set_visibility(false)
+		end
 		mp.observe_property("sub-text", "string", handle_sub_text_change)
 		active = true
 	end
