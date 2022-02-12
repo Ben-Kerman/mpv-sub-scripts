@@ -111,19 +111,19 @@ function toggle()
 	display_state()
 end
 
-mp.add_key_binding(nil, "sub-pause-toggle-start", function()
+mp.add_key_binding(nil, "toggle-start", function()
 	pause_at_start = not pause_at_start
 	toggle()
 end)
 
-mp.add_key_binding("n", "sub-pause-toggle-end", function()
+mp.add_key_binding("n", "toggle-end", function()
 	pause_at_end = not pause_at_end
 	toggle()
 end)
 
-mp.add_key_binding("Alt+r", "sub-pause-skip-next", function() skip_next = true end)
+mp.add_key_binding("Alt+r", "skip-next", function() skip_next = true end)
 
-mp.add_key_binding("Ctrl+r", "sub-pause-replay", function() replay_sub() end)
+mp.add_key_binding("Ctrl+r", "replay", function() replay_sub() end)
 
 if pause_at_start or pause_at_end then
 	toggle()

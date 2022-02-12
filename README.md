@@ -5,10 +5,10 @@ Mostly intended for language learning.
 
 ## Key Bindings
 
-- `n`: toggle auto-pause at end of line (`sub-pause-toggle-end`)
-- `(none)`: toggle auto-pause at start of line (`sub-pause-toggle-start`)
-- `Alt+r`: skip next pause (`sub-pause-skip-next`)
-- `Ctrl+r`: replay active line, always available (`sub-pause-replay`)
+- `(none)`: toggle auto-pause at start of line (`toggle-start`)
+- `n`: toggle auto-pause at end of line (`toggle-end`)
+- `Alt+r`: skip next pause (`skip-next`)
+- `Ctrl+r`: replay active line, always available (`replay`)
 
 To use key bindings other than the defaults above add lines like the following to your
 `input.conf` (where `<action_name>` is the value in parentheses in the above list):
