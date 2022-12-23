@@ -153,7 +153,12 @@ function handle_sub_change(_, sub_end)
 		local time_pos = mp.get_property_number("time-pos")
 		local next_delay = calc_next_delay()
 
-		last_sub_end = time_pos
+		-- if time-pos is nil the file probably just started playing
+		if not time_pos then
+			last_sub_end = -cfg.lead_in
+		else
+			last_sub_end = time_pos
+		end
 		if next_delay ~= nil then
 			if next_delay < cfg.min_skip_interval then return
 			else next_sub_start = time_pos + next_delay end
