@@ -70,10 +70,20 @@ function replay_sub()
 	-- prevent pause if pausing at start is enabled
 	if pause_at_start then skip_next = true end
 
+	mp.set_property("pause", "no")
 	local sub_start = mp.get_property_number("sub-start")
-	if sub_start ~= nil then
+
+	if sub_start == nil then
+		mp.command("no-osd sub-seek -1")
+		mp.register_event("property-change", function(name, data)
+				if name == "sub-start" then
+						sub_start = data
+						mp.set_property("time-pos", sub_start + mp.get_property_number("sub-delay"))
+						mp.unregister_event("property-change")
+				end
+		end)
+	else
 		mp.set_property("time-pos", sub_start + mp.get_property_number("sub-delay"))
-		mp.set_property("pause", "no")
 	end
 end
 
