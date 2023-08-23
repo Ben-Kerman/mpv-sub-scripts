@@ -8,7 +8,7 @@ Mostly intended for language learning.
 - `(none)`: toggle auto-pause at start of line (`toggle-start`)
 - `n`: toggle auto-pause at end of line (`toggle-end`)
 - `Alt+r`: skip next pause (`skip-next`)
-- `Ctrl+r`: replay active line, always available (`replay`)
+- `Ctrl+r`: replay active/last line, always available (`replay`)
 
 To use a key binding other than the defaults above add a line like the
 following to your `input.conf` (where `X` is the binding and `<action_id>`
@@ -62,6 +62,10 @@ Create a file at `script-opts/sub_pause.conf` in your mpv config directory:
 # if unpause_time is set, prevent the next automatic unpause by pressing this key
 # can be anything that would be an acceptable key binding in mpv's input.conf
 #unpause_override=SPACE
+
+# if set to 'yes' (the default), the previous line will be replayed after
+# invoking `replay` if there is currently no active line
+#replay_prev=yes
 ```
 
 ## Known Issues
