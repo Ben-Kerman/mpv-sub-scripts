@@ -149,6 +149,10 @@ function end_skip()
 end
 
 function handle_sub_change(_, sub_end)
+	--if no subtitle track loaded then we don't need to start skipping
+	if mp.get_property_number('sid', -1) == -1 then
+		return
+	end
 	if not sub_end and not skipping then
 		local time_pos = mp.get_property_number("time-pos")
 		local next_delay = calc_next_delay()
